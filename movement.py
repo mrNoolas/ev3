@@ -2,12 +2,16 @@ from ev3dev2.motor import MoveTank, OUTPUT_A, OUTPUT_D, SpeedRPS, SpeedPercent, 
 
 class movement:
     def canMoveForward(self):
-        return not (self.v.onBorder() or self.v.isColliding())
+        return not (self.v.onBorder() or self.v.isColliding() or self.v.isCloseToColliding())
     
-    def forward(self, rotations):
+    def forward(self, rotations):       
         while self.canMoveForward() and rotations > 0:
-            self.engine.on_for_rotations(self.speedPerc, self.speedPerc, self.movementQuantum)
-            rotations -= self.movementQuantum
+            if self.u.checkDistance() > 300 and self.u.checkDistance() < 2500:
+                self.engine.on_for_rotations(self.speedPerc, self.speedPerc, self.movementQuantum)
+                rotations -= self.movementQuantum
+            else :
+                self.engine.on_for_rotations(self.speedPerc, self.speedPerc, self.smallMovementQuantum)
+                rotations -= self.smallMovementQuantum
             
         if not self.canMoveForward():
             self.u.mSpeak('Blocked by something, cannot move forward!')
@@ -45,7 +49,8 @@ class movement:
         
         self.speedPerc = SpeedPercent(100) 
         self.negSpeedPerc = SpeedPercent(-100) 
-        self.movementQuantum = 0.05
+        self.movementQuantum = 0.1
+        self.smallMovementQuantum = 0.02
         
         self.engine = MoveTank(OUTPUT_A, OUTPUT_D)
         self.left_motor = LargeMotor(OUTPUT_A)

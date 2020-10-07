@@ -1,5 +1,4 @@
-
-import utils    
+import utils
 
 class vitals:           
     def onBorder(self):
@@ -16,6 +15,13 @@ class vitals:
             self.u.mBeep()
             self.u.mBeep()
         return isColliding
+    
+    def isCloseToColliding(self):
+        distance = self.u.checkDistance()
+        if distance < 180:
+            self.u.mSpeak('Collision threat in the front!')
+            return True
+        return False
         
                 
     def __init__(self, utils):

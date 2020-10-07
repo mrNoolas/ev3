@@ -2,6 +2,7 @@ from ev3dev2.sound import Sound
 from ev3dev2.display import Display
 from ev3dev2.sensor.lego import TouchSensor
 from ev3dev2.sensor.lego import ColorSensor
+from ev3dev2.sensor.lego import UltrasonicSensor
 from ev3dev2._platform.ev3 import * 
 
 
@@ -63,6 +64,10 @@ class utils:
         if touch:
             self.mSpeak('The right touch sensor is pressed!')
         return touch  
+    
+    def checkDistance(self):
+        return self.usSensor.value()
+        
        
             
     def __init__(self):
@@ -74,6 +79,9 @@ class utils:
         
         self.colorSensor = ColorSensor(INPUT_2)
         self.lastColor = 0
+        
+        self.usSensor = UltrasonicSensor(INPUT_3) 
+        self.usSensor.mode = 'US-DIST-CM'
         
         self.touchL = TouchSensor(INPUT_1)
         self.touchR = TouchSensor(INPUT_4)
