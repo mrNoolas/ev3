@@ -1,4 +1,3 @@
-from ev3dev2.motor import MoveTank, OUTPUT_A, OUTPUT_D, SpeedPercent
 from utils import utils
 from vitals import vitals
 from movement import movement

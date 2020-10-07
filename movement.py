@@ -7,12 +7,12 @@ class movement:
     def forward(self, rotations):       
         while self.canMoveForward() and rotations > 0:
             if self.u.checkDistance() > 300 and self.u.checkDistance() < 2500:
-                self.engine.on_for_rotations(self.speedPerc, self.speedPerc, self.movementQuantum)
-                rotations -= self.movementQuantum
-            else :
-                self.engine.on_for_rotations(self.speedPerc, self.speedPerc, self.smallMovementQuantum)
-                rotations -= self.smallMovementQuantum
+                self.engine.on_for_rotations(self.speedPerc, self.speedPerc, self.movementQuantum, brake=False)
+            else:
+                self.engine.on_for_rotations(self.speedPerc, self.speedPerc, self.smallMovementQuantum, brake=False)
+                rotations -= self.smallMovementQuantum          
             
+        self.engine.off(brake=True)
         if not self.canMoveForward():
             self.u.mSpeak('Blocked by something, cannot move forward!')
             
