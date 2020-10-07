@@ -44,6 +44,7 @@ class utils:
             
     # Moderated speech
     def mSpeak(self, string):
+        print(string)
         if self.playDebugSound:
             self.s.speak(string)
             

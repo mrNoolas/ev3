@@ -1,4 +1,4 @@
-from ev3dev2.motor import MoveTank, OUTPUT_A, OUTPUT_D, SpeedRPS, SpeedPercent
+from ev3dev2.motor import MoveTank, OUTPUT_A, OUTPUT_D, SpeedRPS, SpeedPercent, LargeMotor
 
 class movement:
     def canMoveForward(self):
@@ -6,8 +6,8 @@ class movement:
     
     def forward(self, rotations):
         while self.canMoveForward() and rotations > 0:
-            self.engine.on_for_rotations(self.speedPerc, self.speedPerc, 0.01)
-            rotations -= 0.01
+            self.engine.on_for_rotations(self.speedPerc, self.speedPerc, self.movementQuantum)
+            rotations -= self.movementQuantum
             
         if not self.canMoveForward():
             self.u.mSpeak('Blocked by something, cannot move forward!')
@@ -23,16 +23,19 @@ class movement:
     use direction = 0 to do nothing, direction = -1 for left (counterclockwise) and direction = 1 for right (clockwise)
     '''
     def rotate(self, direction, rotations):
-        if direction < 0:
-            while (not self.u.touchR) and rotations > 0:
-                self.engine.on_for_rotations(self.speedPerc, self.negSpeedPerc, 1)
-                rotations -= 1
+        if direction < 0: 
+            print('left')
+            while (not self.u.checkTouchR()) and rotations > 0:
+                self.engine.on_for_rotations(self.negSpeedPerc, self.speedPerc, self.movementQuantum)
+                rotations -= self.movementQuantum
         elif direction > 0:
-            while (not self.u.touchL) and rotations > 0:
-                self.engine.on_for_rotations(self.negSpeedPerc, self.speedPerc, 1)
-                rotations -= 1
+            print('right')
+            while (not self.u.checkTouchL()) and rotations > 0:
+                self.engine.on_for_rotations(self.speedPerc, self.negSpeedPerc, self.movementQuantum)
                 
-        if self.u.touchR or self.u.touchL:
+                rotations -= self.movementQuantum
+                
+        if self.u.checkTouchR() or self.u.checkTouchL():
             self.u.mSpeak('Could not complete rotation due to collision!')
     
     
@@ -40,7 +43,9 @@ class movement:
         self.v = vitals
         self.u = utils
         
-        self.speedPerc = SpeedPercent(20) 
-        self.negSpeedPerc = SpeedPercent(-20) 
+        self.speedPerc = SpeedPercent(100) 
+        self.negSpeedPerc = SpeedPercent(-100) 
+        self.movementQuantum = 0.05
         
         self.engine = MoveTank(OUTPUT_A, OUTPUT_D)
+        self.left_motor = LargeMotor(OUTPUT_A)

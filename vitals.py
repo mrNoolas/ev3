@@ -15,6 +15,7 @@ class vitals:
             self.u.mSpeak('Collision in the front. Abort Abort!')
             self.u.mBeep()
             self.u.mBeep()
+        return isColliding
         
                 
     def __init__(self, utils):

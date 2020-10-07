@@ -12,11 +12,12 @@ def main():
     print("test color sensor")
     while True:       
         # random rotation in direction
-        rot = random.randint(-30, 30)
-        m.rotate(rot, rot)
+        rot = random.randint(-5, 5) / 10
+        print(rot)
+        m.rotate(rot, abs(rot))
         
         # random forward unless collision
-        dr = random.randint(0, 2)
+        dr = random.randint(0, 5) / 10
         m.forward(dr)
         
         # backward if collision
