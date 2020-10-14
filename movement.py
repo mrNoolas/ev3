@@ -1,6 +1,26 @@
 from ev3dev2.motor import MoveTank, OUTPUT_A, OUTPUT_D, SpeedRPS, SpeedPercent, LargeMotor
+import random
 
 class movement:
+    def takeControl(self):
+        return True
+    
+    def action(self):
+        self.active = True
+        while not self.suppress:       
+            # random rotation in direction
+            rot = random.randint(-5, 5) / 10
+            print(rot)
+            self.rotate(rot, abs(rot))
+            
+            # random forward unless collision
+            dr = random.randint(0, 5) / 10
+            self.forward(dr)
+        self.active = False
+        
+    def suppress(self):
+        self.suppres = True
+    
     def canMoveForward(self):
         return not (self.v.onBorder() or self.v.isColliding() or self.v.isCloseToColliding())
     
@@ -43,7 +63,7 @@ class movement:
             self.u.mSpeak('Could not complete rotation due to collision!')
     
     
-    def __init__(self, vitals, utils):
+    def __init__(self, vitals, utils, priority):
         self.v = vitals
         self.u = utils
         
@@ -54,3 +74,7 @@ class movement:
         
         self.engine = MoveTank(OUTPUT_A, OUTPUT_D)
         self.left_motor = LargeMotor(OUTPUT_A)
+        
+        self.priority = priority
+        self.active = False
+        self.suppress = False

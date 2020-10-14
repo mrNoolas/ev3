@@ -1,27 +1,27 @@
 from utils import utils
 from vitals import vitals
+from stayInBorder import stayInBorder
+from avoidCollision import avoidCollision
 from movement import movement
-import random
+import threading
+
 
 def main():
     u = utils()
     v = vitals(u)
-    m = movement(v, u) 
     
-    print("test color sensor")
-    while True:       
-        # random rotation in direction
-        rot = random.randint(-5, 5) / 10
-        print(rot)
-        m.rotate(rot, abs(rot))
+    m = movement(v, u, 10) 
+    a = avoidCollision(v,m, 20)
+    s = stayInBorder(v, m , 30)
         
-        # random forward unless collision
-        dr = random.randint(0, 5) / 10
-        m.forward(dr)
-        
-        # backward if collision
-        if v.isColliding() or v.onBorder():
-            m.backward(0.5)
-        
+    behaviors = [m,a,s]
+    t1 = threading.Thread(target=go)
+    t2 = threading.Thread(target=doActions)
+    t1.start()
+    t2.start()
+    
+def go():
+    
+def doAction():
             
 main()
