@@ -5,18 +5,18 @@ class stayInBorder:
         return self.v.onBorder()
         
     def action(self):
-        self.active = True
-        if not self.suppress:
-            self.movement.backward()
+        if not self.suppressed:
+            self.movement.backward(0.2)
         self.active = False
     
     def suppress(self):
-        self.suppress = True
+        self.suppressed = True
+
         
-    def __init__(self, vitals, movement, priority):
+    def __init__(self, vitals, movement):
         self.v = vitals
         self.movement = movement
-        self.priority = priority
         self.active = False
+        self.suppressed = False
 
         
