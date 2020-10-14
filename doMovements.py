@@ -5,9 +5,6 @@ class doMovements:
         return True
     
     def action(self):
-        print("test color sensor")
-        print(self.suppressed)
-        print(self.active)
         while (not self.suppressed) and self.active:       
             # random rotation in direction
             rot = random.randint(-6, 6) / 10

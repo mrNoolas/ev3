@@ -41,6 +41,7 @@ def go(behaviors):
                     behaviors[i].active = True
                     activeBehavior = i
             elif not behaviors[activeBehavior].active:
+                #No behavior is running, thus the highest can be started. 
                 if behaviors[i].takeControl():
                     print("Starting behavior " + str(i))
                     behaviors[i].suppressed = False
