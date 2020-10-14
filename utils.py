@@ -47,11 +47,11 @@ class utils:
     def mSpeak(self, string):
         print(string)
         if self.playDebugSound:
-            self.s.speak(string)
+            self.s.speak(string, volume=50, play_type=Sound.PLAY_NO_WAIT_FOR_COMPLETE)
             
     def mBeep(self):
         if self.playDebugSound:
-            self.s.beep()
+            self.s.beep(play_type=Sound.PLAY_NO_WAIT_FOR_COMPLETE)
             
     def checkTouchL(self):
         touch = self.touchL.is_pressed

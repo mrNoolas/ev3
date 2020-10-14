@@ -9,7 +9,7 @@ import threading
 def main():
     u = utils()
     v = vitals(u)
-    
+
     m = movement(v, u, 10) 
     a = avoidCollision(v,m, 20)
     s = stayInBorder(v, m , 30)
