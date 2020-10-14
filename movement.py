@@ -43,10 +43,14 @@ class movement:
     '''
     Tries to do a safe rotation, but assumes to be currently on a border
     
-    Returns 1 if it succeeded, color sensor is guaranteed to be inside or on the border
+    Returns 1 if it succeeded, color sensor is guaranteed to be inside or on the border (there is one exception, see below)
     Returns 0  rotation failed: color sensor is guaranteed to be inside or on the border
     Returns -1 rotation failed: color sensor must be outside of border
     Returns -2 rotation failed: color sensor location status is unknown
+    
+    If the robot is situated in the corner, looking at the border the following will result in failure:
+    the robot starts turning, looks inside the corner, looks at the border at the other side of the corner, and then rotates the sensor outside of the border.
+    This is very difficult to detect compared to the case of moving past a straight edge, unless timing is used. 
     '''
     def __onBorderSafeRotate(self, direction, rotations):
         """
@@ -200,10 +204,14 @@ class movement:
     
     @param rotations: if this is greater than half a turn, it may lead to the robot turning the other way.
     
-    Returns 1 if it succeeded, color sensor is guaranteed to be inside or on the border
+    Returns 1 if it succeeded, color sensor is guaranteed to be inside or on the border (there is one exception, see below)
     Returns 0  rotation failed: color sensor is guaranteed to be inside or on the border
     Returns -1 rotation failed: color sensor must be outside of border
     Returns -2 rotation failed: color sensor location status is unknown
+    
+    If the robot is situated in the corner, looking at the border the following will result in failure:
+    the robot starts turning, looks inside the corner, looks at the border at the other side of the corner, and then rotates the sensor outside of the border.
+    This is very difficult to detect compared to the case of moving past a straight edge, unless timing is used. 
     """
     def safeRotate(self, direction, rotations):
         if rotations <= 0:
@@ -265,10 +273,10 @@ class movement:
         self.v = vitals
         self.u = utils
         
-        speed = 50
+        speed = 100
         self.speedPerc = SpeedPercent(speed) 
         self.negSpeedPerc = SpeedPercent(-speed) 
-        self.sensorInterval = 0.005
+        self.sensorInterval = 0.001
         
         # 1.125 is about the amount of wheel rotations to make a 180 degree turn
         self.one80Rotations = 1.125
