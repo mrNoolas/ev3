@@ -6,9 +6,12 @@ class movement:
         return not (self.v.onBorder() or self.v.isColliding() or self.v.isCloseToColliding())
     
     """
-    tries to rotate to the nearest border in the given direction
+    tries to rotate to the nearest border (which it is not currently on) in the given direction
     """
-    def __rotateToBorder(self, direction):
+    def __findBorder(self, direction, rotations = 0):
+        if rotations == 0 :
+            rotations = 2 * self.one80Rotations
+    
         colCheckFunc = self.u.checkTouchR
         if direction < 0:               
             print('left')       
@@ -20,16 +23,21 @@ class movement:
             b = self.negSpeedPerc
             colCheckFunc = self.u.checkTouchL
             
-        self.engine.on_for_rotations(a, b, 2 * self.one80Rotations, block=False)        
-        while not colCheckFunc() and self.engine.is_running and not self.v.onBorder():
-                sleep(self.sensorInterval)
+        onBorder = True
+        self.engine.on_for_rotations(a, b, rotations, block=False)        
+        while not colCheckFunc() and self.engine.is_running and (not self.v.onBorder() or onBorder):
+            if not self.v.onBorder():
+                onBorder = False
+            sleep(self.sensorInterval)
                 
         self.engine.off(brake=True)
         
-        if self.u.checkTouchR() or self.u.checkTouchL() or not self.v.onBorder():
+        if self.u.checkTouchR() or self.u.checkTouchL():
             self.u.mSpeak('Border not found!')
-            return False
-        return True
+            return -1
+        elif not self.v.onBorder() or onBorder: # if onBorder is True, the rotator never left the border it was already on...
+            return 0
+        return 1
         
         
     '''
@@ -80,7 +88,7 @@ class movement:
             if onBorder or sawTwoBorders:
                 return 0
             else:
-                if self.__rotateToBorder(-direction):
+                if self.__findBorder(-direction):
                     return 0
                 return -2 # rotating back into the direction we came from should work. If not, the environment has changed and we cannot react to that :(
             
@@ -88,30 +96,19 @@ class movement:
         if sawTwoBorders or onBorder:
             return 1
         else:
-            self.engine.on_for_rotations(a, b, self.one80Rotations - rotations, block=False)  
-            while (not colCheckFunc()) and self.engine.is_running:
-                    if not self.v.onBorder() :
-                        onBorder = False
-                    elif not onBorder :
-                        # Currently on border and onBorder has been False, so this is second border occurence
-                        sawTwoBorders = True  
-                        onBorder = True
-                        
-                    sleep(self.sensorInterval)
+            secondBorder = self.__findBorder(direction, self.one80Rotations - rotations)
                     
-            self.engine.off(brake=True)
-            
-            if (self.u.checkTouchR() or self.u.checkTouchL()) or not sawTwoBorders:
-                # collission, so we don't know our current rotation or whether the sensor is outside of the border or not...
-                self.u.mSpeak('Could not rotate, collision!')
-                
+            if (self.u.checkTouchR() or self.u.checkTouchL()) or secondBorder == 1:
+                # collission or second border was found, so we don't know our current rotation or whether the sensor is outside of the border or not...                
                 # return to initial state
-                if self.__rotateToBorder(-direction):
+                if self.__findBorder(-direction) == 1:
                     return 0
                 return -2 # This is only reached if an edge case occured or if the environment has changed during the rotations.
+            elif secondBorder == -1:
+                # error :(, bumped into something while looking for second border
+                return -2
             else :
-                # initial turn was succesful and no second border found, so the turn is valid. Return to desired position
-                self.rotate(-direction, self.one80Rotations - rotations)
+                # initial turn was successful and no second border found, so the turn is valid
                 return 1
         return -2 # should be unreachable
     
@@ -151,7 +148,7 @@ class movement:
                     onBorder = False
                 else :
                     if not sawOneBorder:
-                        sawOneBorder = True    
+                        sawOneBorder = True
                     elif not onBorder:
                         # Currently on border and onBorder has been False, so this is second border occurence
                         sawTwoBorders = True  
@@ -168,7 +165,7 @@ class movement:
                 return 0
             elif sawOneBorder:
                 # Try to turn back to the previous border
-                if self.__rotateToBorder(-direction):
+                if self.__findBorder(-direction) == 1:
                     return 0
                 return -2 # should be unreachable if the environment is static; moving back the way we came should succeed
             else:
@@ -177,8 +174,23 @@ class movement:
         # Rotations was successful so far. If two borders were seen, then whole turn is successful. (If the robot never left the border, this is also fine)
         if sawTwoBorders or not sawOneBorder or onBorder:
             return 1
-        else: # crossed one border so turn is invalid. Return to previous border
-            return self.__rotateToBorder(-direction)
+        elif sawOneBorder:
+            print("hello hello")
+            secondBorder = self.__findBorder(direction, self.one80Rotations)
+                        
+            if secondBorder == -1:
+                return -2 # error while looking for second border
+            elif secondBorder == 1:
+                # There is a second border further along, and the angle is less than 180 degrees, so the desired position is outside of the board
+                # stay here on the border, but return failure
+                return 0
+            
+            # No other borders found, so rotation was valid. Return to desired position and report success:
+            if self.rotate(-direction, self.one80Rotations):
+                return 1
+            return 0               
+        elif self.__findBorder(-direction) == 1: # crossed one border so turn is invalid. Return to previous border
+            return 1 
         return -2
     
     """
