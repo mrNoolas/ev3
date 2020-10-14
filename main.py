@@ -8,7 +8,10 @@ def main():
     v = vitals(u)
     m = movement(v, u) 
     
-    print("test color sensor")
+    h = 1.125
+    m.safeRotate(1, h)
+    
+    """
     while True:       
         # random rotation in direction
         rot = random.randint(-6, 6) / 10
@@ -22,6 +25,7 @@ def main():
         # backward if collision
         if v.isColliding() or v.onBorder():
             m.backward(0.2)
+    """
         
             
 main()
