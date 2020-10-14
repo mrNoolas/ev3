@@ -11,17 +11,17 @@ def main():
     print("test color sensor")
     while True:       
         # random rotation in direction
-        rot = random.randint(-5, 5) / 10
+        rot = random.randint(-6, 6) / 10
         print(rot)
         m.rotate(rot, abs(rot))
         
         # random forward unless collision
-        dr = random.randint(0, 5) / 10
+        dr = random.randint(5, 20) / 10
         m.forward(dr)
         
         # backward if collision
         if v.isColliding() or v.onBorder():
-            m.backward(0.5)
+            m.backward(0.2)
         
             
 main()
