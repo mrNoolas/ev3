@@ -276,7 +276,7 @@ class movement:
         speed = 80
         self.speedPerc = SpeedPercent(speed) 
         self.negSpeedPerc = SpeedPercent(-speed) 
-        self.sensorInterval = 0.001
+        self.sensorInterval = 0.0005
         
         # 1.125 is about the amount of wheel rotations to make a 180 degree turn
         self.one80Rotations = 1.125
