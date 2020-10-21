@@ -66,7 +66,7 @@ def go(behaviors):
                     behaviors[i].active = True
                     activeBehavior = i
                     
-        sleep(10)
+        sleep(0.1)
                     
 def doAction(behaviors):
     while True:

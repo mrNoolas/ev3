@@ -117,6 +117,8 @@ class movement:
                 return -2 # This is only reached if an edge case occured or if the environment has changed during the rotations.
             elif secondBorder == -1:
                 # error :(, bumped into something while looking for second border
+                if self.__findBorder(-direction) == 1:
+                    return 0
                 return -2
             else :
                 # initial turn was successful and no second border found, so the turn is valid
@@ -180,6 +182,9 @@ class movement:
                     return 0
                 return -2 # should be unreachable if the environment is static; moving back the way we came should succeed
             else:
+                # Try to turn back to the previous border
+                if self.__findBorder(-direction) == 1:
+                    return 0
                 return -1
             
         # Rotations was successful so far. If two borders were seen, then whole turn is successful. (If the robot never left the border, this is also fine)
@@ -197,11 +202,11 @@ class movement:
                 return 0
             
             # No other borders found, so rotation was valid. Return to desired position and report success:
-            if self.rotate(-direction, self.one80Rotations):
+            if self.rotate(-direction, self.one80Rotations) and not self.v.onBorder(): # extra onBorder check to take care of rotation imperfections 
                 return 1
             return 0               
         elif self.__findBorder(-direction) == 1: # crossed one border so turn is invalid. Return to previous border
-            return 1 
+            return 0 
         return -2
     
     """

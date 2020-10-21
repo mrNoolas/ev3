@@ -36,8 +36,9 @@ class utils:
             print("No valid value") 
             self.mSpeak('Value not valid!')
             
-    def checkColor(self):        
+    def checkColor(self):
         newColor = self.colorSensor.color
+        
         if newColor != self.lastColor:
             self.lastColor = newColor
             self.int2SpeakColor(newColor)
