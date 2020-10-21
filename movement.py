@@ -274,7 +274,7 @@ class movement:
         self.v = vitals
         self.u = utils
         
-        speed = 50
+        speed = 80
         self.speedPerc = SpeedPercent(speed) 
         self.negSpeedPerc = SpeedPercent(-speed) 
         self.sensorInterval = 0.001
