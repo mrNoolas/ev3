@@ -12,7 +12,7 @@ class checkColor:
             if self.lastColor in self.colorsToFind:
                 self.colorsToFind.remove(self.lastColor)
             self.u.playDebugSound = True
-            self.u.mSpeak("Found color!")
+            #self.u.mBeep()
             self.u.int2SpeakColor(self.lastColor)
             self.u.playDebugSound = False
             if not self.colorsToFind:
