@@ -48,6 +48,8 @@ def go(behaviors):
     behaviors[highest].active = True
     while not behaviors[1].foundAllColors: 
         #print("Current running behavior " + str(activeBehavior))
+        print("Colors to be checked:")
+        print(behaviors[1].colorsToFind)
         for i in range(len(behaviors)-1, -1, -1):
             if i > activeBehavior:
                 if behaviors[i].takeControl() and behaviors[activeBehavior].active:
@@ -64,10 +66,9 @@ def go(behaviors):
                     print("Starting behavior " + str(i))
                     behaviors[i].suppressed = False
                     behaviors[i].active = True
-                    activeBehavior = i
-                    
-        sleep(10)
-                    
+                    activeBehavior = i        
+        sleep(0.5)
+            
 def doAction(behaviors):
     while not behaviors[1].foundAllColors:
         for i in range(len(behaviors)-1, -1, -1): 

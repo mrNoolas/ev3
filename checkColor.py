@@ -3,6 +3,7 @@ class checkColor:
     def takeControl(self):
         color = self.u.lastColor
         if color != self.lastColor and (color == 2 or color == 4 or color == 5): #Blue, yellow or red  
+            print("Color read: " + str(color))
             self.lastColor = color
             return True
         else: return False 
@@ -11,11 +12,12 @@ class checkColor:
         if not self.suppressed:
             if self.lastColor in self.colorsToFind:
                 self.colorsToFind.remove(self.lastColor)
-            self.u.playDebugSound = True
-            self.u.mSpeak("Found color!")
-            self.u.int2SpeakColor(self.lastColor)
-            self.u.playDebugSound = False
+                self.u.playDebugSound = True
+                self.u.mSpeak("Found color!")
+                self.u.int2SpeakColor(self.lastColor)
+                self.u.playDebugSound = False
             if not self.colorsToFind:
+                self.u.mSpeak("Found all colors!")
                 self.foundAllColors = True
         self.active = False
     
