@@ -14,8 +14,8 @@ def main():
     m = movement(v, u) 
     
     move = doMovements(v,m)
-    a = avoidCollision(v,m)
-    s = stayInBorder(v, m)
+#     a = avoidCollision(v,m)
+#     s = stayInBorder(v, m)
         
 #    while True:       
 #        # random rotation in direction
@@ -33,7 +33,8 @@ def main():
 #            m.backward(0.2)
 
         
-    behaviors = [move,a,s]
+#     behaviors = [move,a,s]
+    behaviors = [move]    
     print("Start thread 1")
     Thread(target=go, args=[behaviors]).start()
     print("Start thread 2")
@@ -68,7 +69,7 @@ def doAction(behaviors):
     while True:
         for i in range(len(behaviors)-1, -1, -1): 
             if behaviors[i].active:
-                #print("Thread 2 runs behavior " + str(i))
+                print("Thread 2 runs behavior " + str(i))
                 behaviors[i].action();
     
 main()

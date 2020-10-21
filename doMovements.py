@@ -9,7 +9,7 @@ class doMovements:
             # random rotation in direction
             rot = random.randint(-6, 6) / 10
             print(rot)
-            self.m.rotate(rot, abs(rot))
+            self.m.safeRotate(rot, abs(rot))
             
             # random forward unless collision
             dr = random.randint(5, 20) / 10
