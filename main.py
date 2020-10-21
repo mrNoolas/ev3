@@ -5,7 +5,8 @@ from avoidCollision import avoidCollision
 from movement import movement
 from threading import Thread
 from doMovements import doMovements
-import time
+from time import sleep
+
 
 
 def main():
@@ -64,6 +65,8 @@ def go(behaviors):
                     behaviors[i].suppressed = False
                     behaviors[i].active = True
                     activeBehavior = i
+                    
+        sleep(10)
                     
 def doAction(behaviors):
     while True:

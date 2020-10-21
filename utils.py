@@ -45,8 +45,8 @@ class utils:
             
     # Moderated speech
     def mSpeak(self, string):
-        print(string)
         if self.playDebugSound:
+            print(string)
             self.s.speak(string, volume=50, play_type=Sound.PLAY_NO_WAIT_FOR_COMPLETE)
             
     def mBeep(self):
@@ -54,21 +54,13 @@ class utils:
             self.s.beep(play_type=Sound.PLAY_NO_WAIT_FOR_COMPLETE)
             
     def checkTouchL(self):
-        touch = self.touchL.is_pressed
-        if touch:
-            self.mSpeak('The left touch sensor is pressed!')
-        return touch  
+        return self.touchL.is_pressed 
     
     def checkTouchR(self):
-        touch = self.touchR.is_pressed
-        if touch:
-            self.mSpeak('The right touch sensor is pressed!')
-        return touch  
+        return self.touchR.is_pressed 
     
     def checkDistance(self):
         return self.usSensor.value()
-        
-       
             
     def __init__(self):
         self.playDebugSound = False

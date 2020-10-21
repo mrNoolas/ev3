@@ -1,11 +1,16 @@
 from ev3dev2.motor import MoveTank, OUTPUT_A, OUTPUT_D, SpeedRPS, SpeedPercent, LargeMotor
 import random
 from time import sleep
+from arcade.color import USC_CARDINAL
 
 
 class movement:
-    def canMoveForward(self):
-        return not (self.v.onBorder() or self.v.isColliding() or self.v.isCloseToColliding())
+    def canMoveForward(self, useUltrasonic = True):
+        if useUltrasonic:
+            return not (self.v.onBorder() or self.v.isColliding() or self.v.isCloseToColliding())
+        else:
+            return not (self.v.onBorder() or self.v.isColliding())
+    
     
     """
     tries to rotate to the nearest border (which it is not currently on) in the given direction
@@ -16,11 +21,11 @@ class movement:
     
         colCheckFunc = self.u.checkTouchR
         if direction < 0:               
-            print('left')       
+            self.u.mSpeak('left')       
             a = self.negSpeedPerc
             b = self.speedPerc                    
         elif direction > 0:
-            print('right')
+            self.u.mSpeak('right')
             a = self.speedPerc
             b = self.negSpeedPerc
             colCheckFunc = self.u.checkTouchL
@@ -67,11 +72,11 @@ class movement:
         b = 0
         
         if direction < 0:               
-            print('left')       
+            self.u.mSpeak('left')       
             a = self.negSpeedPerc
             b = self.speedPerc                    
         elif direction > 0:
-            print('right')
+            self.u.mSpeak('right')
             a = self.speedPerc
             b = self.negSpeedPerc
             colCheckFunc = self.u.checkTouchL
@@ -139,11 +144,11 @@ class movement:
         b = 0
         
         if direction < 0:               
-            print('left')       
+            self.u.mSpeak('left')       
             a = self.negSpeedPerc
             b = self.speedPerc                    
         elif direction > 0:
-            print('right')
+            self.u.mSpeak('right')
             a = self.speedPerc
             b = self.negSpeedPerc
             colCheckFunc = self.u.checkTouchL
@@ -231,9 +236,14 @@ class movement:
             return self.__blindSafeRotate(direction, rotations)
     
     def forward(self, rotations):    
-        self.engine.on_for_rotations(self.speedPerc, self.speedPerc, rotations, brake=True, block=False)    
-              
-        while self.canMoveForward() and self.engine.is_running :
+        if self.canMoveForward():
+            self.engine.on_for_rotations(self.speedPerc, self.speedPerc, rotations, brake=True, block=False)    
+             
+        # counter to reduce the queries to the ultrasonic sensor 
+        USCtr = 0
+        while self.canMoveForward(USCtr == self.USInterval - 1) and self.engine.is_running :
+            USCtr += 1
+            USCtr %= self.USInterval
             sleep(self.sensorInterval)
             
         self.engine.off(brake=True)
@@ -252,10 +262,10 @@ class movement:
     def rotate(self, direction, rotations):
         colCheckFunc = self.u.checkTouchR       
         if direction < 0: 
-            print('left')
+            self.u.mSpeak('left')
             self.engine.on_for_rotations(self.negSpeedPerc, self.speedPerc, rotations, block=False)  
         elif direction > 0:
-            print('right')
+            self.u.mSpeak('right')
             self.engine.on_for_rotations(self.speedPerc, self.negSpeedPerc, rotations, block=False)
             colCheckFunc = self.u.checkTouchL
                 
@@ -274,10 +284,11 @@ class movement:
         self.v = vitals
         self.u = utils
         
-        speed = 50
+        speed = 80
         self.speedPerc = SpeedPercent(speed) 
         self.negSpeedPerc = SpeedPercent(-speed) 
-        self.sensorInterval = 0.001
+        self.sensorInterval = 0#0.001
+        self.USInterval = 100
         
         # 1.125 is about the amount of wheel rotations to make a 180 degree turn
         self.one80Rotations = 1.125
