@@ -15,10 +15,11 @@ class vitals:
         return isColliding
     
     def isCloseToColliding(self):
-#         distance = self.u.checkDistance()
-#         if distance < 180:
-#             self.u.mSpeak('Collision threat in the front!')
-#             return True
+        distance = self.u.checkDistance()
+        if distance < 280:
+            self.u.mSpeak('Collision threat in the front!')
+            return True
+
         return False
         
                 

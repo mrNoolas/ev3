@@ -17,6 +17,22 @@ def main():
     a = avoidCollision(v,m)
     s = stayInBorder(v, m)
         
+#    while True:       
+#        # random rotation in direction
+#        rot = random.randint(-6, 6) / 10
+#        print(rot)
+#        #m.rotate(rot, abs(rot))
+#        m.safeRotate(rot, abs(rot))
+#        
+#        # random forward unless collision
+#        dr = random.randint(5, 20) / 10
+#        m.forward(dr)
+#        
+#        # backward if collision
+#        if v.isColliding() or v.onBorder():
+#            m.backward(0.2)
+
+        
     behaviors = [move,a,s]
     print("Start thread 1")
     Thread(target=go, args=[behaviors]).start()
