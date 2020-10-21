@@ -66,9 +66,10 @@ def go(behaviors):
                     print("Starting behavior " + str(i))
                     behaviors[i].suppressed = False
                     behaviors[i].active = True
-                    activeBehavior = i        
-        sleep(0.5)
-            
+                    activeBehavior = i
+                    
+        sleep(0.1)
+                    
 def doAction(behaviors):
     while not behaviors[1].foundAllColors:
         for i in range(len(behaviors)-1, -1, -1): 

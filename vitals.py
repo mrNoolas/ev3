@@ -2,7 +2,8 @@ from utils import utils
 
 class vitals:           
     def onBorder(self):
-        return self.u.checkColor() == 1       
+        color = self.u.checkColor()
+        return color == 1 or color == 0        
     
     def isColliding(self):
         isColliding = self.u.checkTouchL() or self.u.checkTouchR()

@@ -9,14 +9,16 @@ class doMovements:
             # random rotation in direction
             rot = random.randint(-6, 6) / 10
             print(rot)
-            print("saferotate result: " + str(self.m.safeRotate(rot, abs(rot))))
+            result = self.m.safeRotate(rot, abs(rot))
+            print("saferotate result: " + str(result))
             
-            if self.v.onBorder():
+            if result == 1:
+                # random forward unless collision
+                dr = random.randint(5, 20) / 10
+                self.m.forward(dr)
+            else:
                 self.m.backward(0.20) # 0.2 seems to be the ideal value here; it performs better than 0.15 and 0.25
             
-            # random forward unless collision
-            dr = random.randint(5, 20) / 10
-            self.m.forward(dr)
         self.active = False
         
     def suppress(self):
