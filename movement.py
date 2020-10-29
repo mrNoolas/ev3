@@ -191,7 +191,7 @@ class movement:
         if sawTwoBorders or not sawOneBorder or onBorder:
             return 1
         elif sawOneBorder:
-            print("hello hello")
+            #print("hello hello")
             secondBorder = self.__findBorder(direction, self.one80Rotations)
                         
             if secondBorder == -1:

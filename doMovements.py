@@ -8,9 +8,9 @@ class doMovements:
         while (not self.suppressed) and self.active:       
             # random rotation in direction
             rot = random.randint(-6, 6) / 10
-            print(rot)
+            #print(rot)
             result = self.m.safeRotate(rot, abs(rot))
-            print("saferotate result: " + str(result))
+            #print("saferotate result: " + str(result))
             
             if result == 1:
                 # random forward unless collision

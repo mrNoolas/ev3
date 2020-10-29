@@ -9,31 +9,31 @@ from ev3dev2._platform.ev3 import *
 class utils:
     def int2SpeakColor(self, colornr):
         if colornr == 0:
-            print("NoColor")
+            #print("NoColor")
             self.mSpeak('This is not a color')
         elif colornr == 1:
-            print("Black")
+            #print("Black")
             self.mSpeak('Black')
         elif colornr == 2:
-            print("Blue")
+            #print("Blue")
             self.mSpeak('Blue')
         elif colornr == 3:
-            print("Green")
+            #print("Green")
             self.mSpeak('Green')
         elif colornr == 4:
-            print("Yellow")
+            #print("Yellow")
             self.mSpeak('Yellow')
         elif colornr == 5:
-            print("Red")
+            #print("Red")
             self.mSpeak('Red')
         elif colornr == 6:
-            print("White")
+            #print("White")
             self.mSpeak('White')
         elif colornr == 7:
-            print("Brown")
+            #print("Brown")
             self.mSpeak('Brown')
         else:
-            print("No valid value") 
+            #print("No valid value") 
             self.mSpeak('Value not valid!')
             
     def checkColor(self):
@@ -47,7 +47,7 @@ class utils:
     # Moderated speech
     def mSpeak(self, string):
         if self.playDebugSound:
-            print(string)
+            #print(string)
             self.s.speak(string, volume=50, play_type=Sound.PLAY_NO_WAIT_FOR_COMPLETE)
             
     def mBeep(self):
