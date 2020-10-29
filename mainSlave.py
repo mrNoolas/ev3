@@ -63,7 +63,7 @@ def send(sock_in, sock_out, behaviors):
             sock_out.flush()
             print('SLAVE: Sent ' + str(behaviors[2].lastColor))
             behaviors[2].readyToSend = False
-   
+        
 def go(behaviors):
     activeBehavior = 0 #Standard = movement
     highest = 0 #Standard = movement
