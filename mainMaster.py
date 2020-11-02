@@ -46,14 +46,10 @@ def runBluetooth(behaviors):
     while not behaviors[2].foundAllColors:
         sleep(1)
     
-    sleep(5)
-    print("end")
+    
     sock_out.close()
-    print("end1")
     sock.close()
-    print("end3")
     sock_in.close()
-    print("end2")
     
     
 def listen(sock_in, sock_out, behaviors):
