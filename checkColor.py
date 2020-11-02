@@ -18,7 +18,7 @@ class checkColor:
             #self.u.mBeep()
             self.u.int2SpeakColor(self.lastColor)
             self.u.playDebugSound = False
-            if not self.colorsToFind:
+            if len(self.colorsToFind) == 0:
                 self.u.mSpeak("Found all colors!")
                 self.foundAllColors = True
         self.active = False

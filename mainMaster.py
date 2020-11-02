@@ -21,6 +21,8 @@ def main():
     
     behaviors = [move,r,c]
     runBluetooth(behaviors)
+    print("Shutting down...")
+    return 0
    
     
 def connect():
@@ -43,9 +45,16 @@ def runBluetooth(behaviors):
     Thread(target=doAction, args=[behaviors]).start() 
     while not behaviors[2].foundAllColors:
         sleep(1)
-    sock_in.close()
+    
+    sleep(5)
+    print("end")
     sock_out.close()
+    print("end1")
     sock.close()
+    print("end3")
+    sock_in.close()
+    print("end2")
+    
     
 def listen(sock_in, sock_out, behaviors):
     print('MASTER: Now listening...')

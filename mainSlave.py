@@ -5,7 +5,6 @@ from movement import movement
 from threading import Thread
 from doMovements import doMovements
 from time import sleep
-from test.test_socketserver import receive
 from receiveMessage import receiveMessage
 
 import bluetooth
@@ -23,6 +22,8 @@ def main():
 
     behaviors = [move,r,c]   
     runBluetooth(behaviors)
+    print("Shutting down...")
+    return 0
     
 def connect():
     port = 3
@@ -42,9 +43,13 @@ def runBluetooth(behaviors):
     Thread(target=doAction, args=[behaviors]).start()
     while not behaviors[2].foundAllColors:
         sleep(1)
-    sock_in.close()
+    print("end")
     sock_out.close()
+    print("end1")
+    sock_in.close()
+    print("end2")
     sock.close()
+    print("end3")
 
 def listen(sock_in, sock_out, behaviors):
     print('SLAVE: Now listening...')
